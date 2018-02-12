@@ -2,6 +2,18 @@
 ## [Rubric](https://review.udacity.com/#!/rubrics/1067/view) Points
 ### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.
 
+[//]: # (Image References)
+
+[noisy]: ./images/noisy.png
+[filtered]: ./images/filtered.png
+[table]: ./images/table.png
+[clusters]: ./images/clusters.png
+[conf1]: ./images/conf1.png
+[conf2]: ./images/conf2.png
+[world1]: ./images/world1.png
+[world2]: ./images/world2.png
+[world3]: ./images/world3.png
+
 ---
 ### Writeup / README
 
@@ -14,17 +26,17 @@ Implementation of the cloud preprocessing pipeline is in `sensor_stick/src/senso
 #### 1. Complete Exercise 1 steps. Pipeline for filtering and RANSAC plane fitting implemented.
 
 Original point cloud:
-![pcl][./images/noisy.png]
+![pcl][noisy]
 
 The point cloud is run through a passthrough filter, eliminating points outside of [-0.45, 0.45] in the y dimension and [0.6, 1.1] in the z dimension.
 Later the cloud is denoised using `statistical_outlier_filter(K = 10, STDDEV = 1.5)`.
 
-![pcl][./images/filtered.png]
+![pcl][filtered]
 
 Only then the data is downsampled using `voxel_grid_filter(LEAF_SIZE = 0.01)`.
 Then a plane model is fitted using `RANSAC(MAX_DISTANCE = 0.01)` to detect table points.
 
-![table][./images/table.png]
+![table][table]
 
 #### 2. Complete Exercise 2 steps: Pipeline including clustering for segmentation implemented.
 
@@ -32,7 +44,7 @@ The remaining points are split into Euclidean clusters and processed separately 
 The color information is stripped from the data and `EuclideanClusterExtraction(TOLERANCE = 0.05, MINSIZE = 50, MAXSIZE = 5000)` is performed.
 The clusters are additionally outputted with different colors for inspection.
 
-![clusters][./images/clusters.png]
+![clusters][clusters]
 
 #### 3. Complete Exercise 3 Steps.  Features extracted and SVM trained.  Object recognition implemented.
 
@@ -45,8 +57,8 @@ Furthermore, I've noticed that the normals histograms lower the performance of t
 
 The model has been trained using the provided script, I have not made any modifications there.
 
-![conf][./images/conf1.png]
-![conf][./images/conf2.png]
+![conf][conf1]
+![conf][conf2]
 
 Each cluster from step 2 is preprocessed into a histogram and scaled.
 A feature obtained this way is used with the learned model to predict a label.
@@ -63,6 +75,6 @@ It's a bit disappointing that the normals features weren't useful at all.
 I suspect this is because normals are sensitive to rotation.
 Perhaps a larger training set or a feature that captures the relations between normals such as VFH estimation would be more effective.
 
-![world1][./images/world1.png]
-![world2][./images/world2.png]
-![world3][./images/world3.png]
+![world1][world1]
+![world2][world2]
+![world3][world3]

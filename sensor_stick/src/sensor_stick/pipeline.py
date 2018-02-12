@@ -5,6 +5,7 @@ import numpy as np
 
 
 def denoise(cloud):
+  ''' Removes outlier voxels. '''
   outlier_filter = cloud.make_statistical_outlier_filter()
   outlier_filter.set_mean_k(10)
   outlier_filter.set_std_dev_mul_thresh(1.5)
@@ -12,12 +13,14 @@ def denoise(cloud):
 
 
 def voxel(cloud, leaf_size=0.01):
+  ''' Downsamples the cloud using a voxel grid filter. '''
   vox = cloud.make_voxel_grid_filter()
   vox.set_leaf_size(leaf_size, leaf_size, leaf_size)
   return vox.filter()
 
 
 def passth(cloud, axis='z', amin=0.6, amax=1.1):
+  ''' Performs passthrough filtering. '''
   passthrough = cloud.make_passthrough_filter()
 
   # Assign axis and range to the passthrough filter object.
@@ -29,6 +32,7 @@ def passth(cloud, axis='z', amin=0.6, amax=1.1):
 
 
 def plane_points(cloud):
+  ''' Fits a plane model using RANSAC to detect table points in the cloud. '''
   seg = cloud.make_segmenter()
 
   # Set the model you wish to fit

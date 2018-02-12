@@ -6,9 +6,11 @@ import sensor_msgs.point_cloud2 as pc2
 
 
 def rgb_to_hsv(rgb_list):
-    rgb_normalized = [1.0*rgb_list[0]/255, 1.0*rgb_list[1]/255, 1.0*rgb_list[2]/255]
-    hsv_normalized = matplotlib.colors.rgb_to_hsv([[rgb_normalized]])[0][0]
-    return hsv_normalized
+  rgb_normalized = [
+      1.0 * rgb_list[0] / 255, 1.0 * rgb_list[1] / 255, 1.0 * rgb_list[2] / 255
+  ]
+  hsv_normalized = matplotlib.colors.rgb_to_hsv([[rgb_normalized]])[0][0]
+  return hsv_normalized
 
 
 def compute_color_histograms(cloud, using_hsv=True):
@@ -37,6 +39,7 @@ def compute_normal_histograms(normal_cloud):
               normal_cloud,
               skip_nans=True,
               field_names=('normal_x', 'normal_y', 'normal_z'))))
-  hists = np.apply_along_axis(np.histogram, 0, norms, bins=32, range=(-1., 1.))[0]
+  hists = np.apply_along_axis(
+      np.histogram, 0, norms, bins=32, range=(-1., 1.))[0]
   feats = np.concatenate(hists).astype(np.float64)
   return feats / np.sum(feats)

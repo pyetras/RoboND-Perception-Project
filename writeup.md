@@ -68,6 +68,8 @@ I publish a list of Detected Object that is later processed into YAML files usin
 
 #### 1. For all three tabletop setups (`test*.world`), perform object recognition, then read in respective pick list (`pick_list_*.yaml`). Next construct the messages that would comprise a valid `PickPlace` request output them to `.yaml` format.
 
+`instruction.py` computes the centroid of each cluster' point cloud.
+
 The yaml files are in `data/` directory.
 I've been able to successfully detect 100% of objects in each scene.
 
